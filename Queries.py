@@ -44,7 +44,7 @@ select
       'YYYY-MM-DD"T"HH24:MM:SSxFF3"Z"'
     )                                       "sectionEndDate",              
     ''                                      "classGroupId",                -- not required
-    ssbsect.ssbsect_enrl                    "estimatedEnrollment"
+    ssbsect.ssbsect_max_enrl                "estimatedEnrollment"
 from ssbsect
 join stvcamp on stvcamp.stvcamp_code = ssbsect.ssbsect_camp_code
 join stvdept on stvdept.stvdept_code = ssbsect.ssbsect_subj_code
@@ -111,7 +111,9 @@ from (
         from sfrstcr
         join spriden on spriden.spriden_pidm        = sfrstcr.sfrstcr_pidm
                     and spriden.spriden_change_ind is null
-        join ssbsect on ssbsect.ssbsect_crn         = sfrstcr.sfrstcr_crn
+        join ssbsect 
+        on ssbsect.ssbsect_crn         = sfrstcr.sfrstcr_crn
+        and ssbsect.ssbsect_term_code  = sfrstcr.sfrstcr_term_code
         join stvdept on stvdept.stvdept_code        = ssbsect.ssbsect_subj_code
         join stvterm on stvterm.stvterm_code        = ssbsect.ssbsect_term_code
         /* Full Time / Part Time status */
@@ -193,7 +195,9 @@ from (
             ''                                      "studentFullPartTimeStatus",      -- conditional; Required if "userRole" is "Student"
             ''                                      "creditHours"                     -- conditional; Required if "userRole" is "Student"
         from sfrstcr
-        join ssbsect on ssbsect.ssbsect_crn         = sfrstcr.sfrstcr_crn
+        join ssbsect 
+        on ssbsect.ssbsect_crn         = sfrstcr.sfrstcr_crn
+        and ssbsect.ssbsect_term_code  = sfrstcr.sfrstcr_term_code
         join stvdept on stvdept.stvdept_code        = ssbsect.ssbsect_subj_code
         join stvterm on stvterm.stvterm_code        = ssbsect.ssbsect_term_code
         JOIN (
